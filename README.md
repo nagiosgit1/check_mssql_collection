@@ -7,7 +7,7 @@ Microsoft SQL Server.
 Installation
 ----------------------
 
-These plugins come installed by default on Nagios XI.
+A modified version of these plugins come installed by default on Nagios XI.
 
 If you're using Nagios Core, do the following:
 0. Make sure python, epel, pip, and pymssql are installed.
@@ -55,8 +55,16 @@ Changes can be seen at the CHANGELOG file.
 Authors
 ----------------------
 
-These plugins were originally written by Nicholas Scott. A full list of current
-and former maintainers can be seen in the AUTHORS file.
+These plugins were originally written by Nicholas Scott in 2016. A full list
+of authors, contributors, and maintainers is as follows:
+Nicholas Scott (Original Author, Nagios)
+
+Chris Ampenberger
+Jake Omann (Nagios)
+Josh Soref
+ojw
+scot0357
+Scott Wilkerson (Nagios)
 
 Current Version
 ----------------------
@@ -70,7 +78,14 @@ Other open-source Nagios software can be found at:
   https://github.com/NagiosEnterprises/
 
 License
-----------------------
+-------
 
 These plugins are released under GPLv3. See the full license at the LICENSE 
 file.
+
+Questions?
+----------
+
+If you have questions about these plugins, or encounter problems getting things
+working along the way, your best bet for an answer or quick resolution is to check the
+[Nagios Support Forums](https://support.nagios.com/forum/viewforum.php?f=5).
