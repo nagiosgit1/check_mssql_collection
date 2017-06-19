@@ -14,38 +14,39 @@ If you're using Nagios Core, do the following:
 
 1. Download this project as a .zip onto your Core installation.
 
-  cd /tmp
-  wget https://github.com/NagiosEnterprises/check_mssql_collection/archive/master.zip
-
+```
+cd /tmp
+wget https://github.com/NagiosEnterprises/check_mssql_collection/archive/master.zip
+```
 2. Unzip the project
-
-  unzip master.zip
-
+```
+unzip master.zip
+```
 3. Transfer the python scripts to the /usr/local/nagios/libexec/ directory
-
-  mv check_mssql_connection-master/*.py /usr/local/nagios/libexec/
-
+```
+mv check_mssql_connection-master/*.py /usr/local/nagios/libexec/
+```
 4. Set the user 'nagios' as owner
-
-  chown nagios.nagios /usr/local/nagios/libexec/*.py 
-
+```
+chown nagios.nagios /usr/local/nagios/libexec/*.py 
+```
 5. Configure the commands.cfg file to add commands using those plugins.
-
-  nano /usr/local/nagios/etc/commands.cfg
-
+```
+nano /usr/local/nagios/etc/commands.cfg
+```
 You will need to experiment with the usage of these scripts to determine which
 commands will suit your Core installaion best. Here is an example command to
 test connectivity to your MSSQL database:
-
-  /usr/local/nagios/libexec/check_mssql_database.py -H xxx.xxx.xxx.xxx -U user -P passwd -T tablename --time2connect -w 1 -c 5000
-
+```
+/usr/local/nagios/libexec/check_mssql_database.py -H xxx.xxx.xxx.xxx -U user -P passwd -T tablename --time2connect -w 1 -c 5000
+```
 If you fill in your hostname, username, and password, and choose a table in the
 database, this check should almost always return with a warning.
 
 6. Restart the nagios service.
-
-  service nagios restart
-
+```
+service nagios restart
+```
 Changes
 ----------------------
 
