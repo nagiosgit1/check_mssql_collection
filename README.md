@@ -63,7 +63,6 @@ Chris Ampenberger
 Jake Omann (Nagios)  
 Josh Soref  
 ojw  
-scot0357  
 Scott Wilkerson (Nagios)  
 Sebastian Wolf (Nagios)  
 
