@@ -5,7 +5,7 @@ check_mssql_collection is a set of Nagios plugins for checking the status of a
 Microsoft SQL Server.
 
 Installation
-----------------------
+------------
 
 A modified version of these plugins come installed by default on Nagios XI.
 
@@ -48,23 +48,15 @@ database, this check should almost always return with a warning.
 service nagios restart
 ```
 Changes
-----------------------
+-------
 
 Changes can be seen at the CHANGELOG file.
 
-Authors
-----------------------
+Contributors
+------------
 
-These plugins were originally written by Nicholas Scott in 2016. A full list
-of authors, contributors, and maintainers is as follows:
-
-Nicholas Scott (Original Author, Nagios)  
-Chris Ampenberger  
-Jake Omann (Nagios)  
-Josh Soref  
-ojw  
-Scott Wilkerson (Nagios)  
-Sebastian Wolf (Nagios)  
+Please see the file at CONTRIBUTORS for a full list of authors, contributors,
+and maintainers.
 
 Current Version
 ----------------------
