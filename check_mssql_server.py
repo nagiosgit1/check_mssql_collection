@@ -260,6 +260,8 @@ MODES = {
 
 }
 
+PERF_STRING = "" # nagios perf string
+
 def return_nagios(options, stdout='', result='', unit='', label=''):
     if is_within_range(options.critical, result):
         prefix = 'CRITICAL: '
@@ -275,7 +277,7 @@ def return_nagios(options, stdout='', result='', unit='', label=''):
         stdout = stdout % (strresult)
     except TypeError, e:
         pass
-    stdout = '%s%s|%s=%s%s;%s;%s;;' % (prefix, stdout, label, strresult, unit, options.warning or '', options.critical or '')
+    stdout = (prefix, stdout, label, strresult, unit, options.warning or '', options.critical or '')
     raise NagiosReturn(stdout, code)
 
 class NagiosReturn(Exception):
@@ -389,6 +391,7 @@ def parse_args():
     nagios = OptionGroup(parser, "Nagios Plugin Information")
     nagios.add_option('-w', '--warning', help='Specify warning range.', default=None)
     nagios.add_option('-c', '--critical', help='Specify critical range.', default=None)
+    nagios.add_option('--perfall', action="store_true", help='Run all queries and add all perf values', default=False)
     parser.add_option_group(nagios)
     
     mode = OptionGroup(parser, "Mode Options")
@@ -451,6 +454,9 @@ def main():
     
     mssql, total, host = connect_db(options)
     
+    if options.perfall and not options.mode =='test':
+        run_tests(mssql, options, host, True)
+    
     if options.mode =='test':
         run_tests(mssql, options, host)
         
@@ -477,22 +483,31 @@ def execute_query(mssql, options, host=''):
         mssql_query = MSSQLQuery(**sql_query)
     mssql_query.do(mssql)
 
-def run_tests(mssql, options, host):
+def run_tests(mssql, options, host, perf=False):
+    global PERF_STRING
     failed = 0
     total  = 0
     del MODES['time2connect']
     del MODES['test']
+    orig_mode = options.mode
     for mode in MODES.keys():
         total += 1
         options.mode = mode
         try:
             execute_query(mssql, options, host)
-        except NagiosReturn:
-            print "%s passed!" % mode
+        except NagiosReturn, e:
+            if perf:
+                PERF_STRING += '%s=%s%s;%s;%s;; ' % (e.message[2:])
+            else:
+                print "%s passed!" % mode
         except Exception, e:
             failed += 1
-            print "%s failed with: %s" % (mode, e)
-    print '%d/%d tests failed.' % (failed, total)
+            if not perf:
+                print "%s failed with: %s" % (mode, e)
+    if not perf:
+        print '%d/%d tests failed.' % (failed, total)
+    
+    options.mode = orig_mode
     
 if __name__ == '__main__':
     try:
@@ -507,7 +522,13 @@ if __name__ == '__main__':
         print e
         sys.exit(3)
     except NagiosReturn, e:
-        print e.message
+        if PERF_STRING:
+            if e.message[2] == "time":
+                print '%s%s|%s=%s%s;%s;%s;; ' % (e.message) + PERF_STRING
+            else:
+                print '%s%s|' % (e.message[:2]) + PERF_STRING
+        else:
+            print '%s%s|%s=%s%s;%s;%s;;' % (e.message)
         sys.exit(e.code)
     except Exception, e:
         print type(e)
